@@ -1,6 +1,5 @@
 """
-Improved Multinomial Naive Bayes Classifier
-Enhanced version with better preprocessing and feature engineering
+Multinomial Naive Bayes Classifier
 """
 
 import pandas as pd
@@ -26,12 +25,12 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-class ImprovedFakeNewsClassifier:
-    """Enhanced Multinomial Naive Bayes classifier with better feature engineering"""
+class FakeNewsClassifier:
+    """Multinomial Naive Bayes classifier"""
     
     def __init__(self, vectorizer_type='tfidf', max_features=10000, ngram_range=(1, 3), alpha=0.1):
         """
-        Initialize the improved classifier
+        Initialize the classifier
         
         Args:
             vectorizer_type: 'tfidf' or 'count' for text vectorization
@@ -44,7 +43,7 @@ class ImprovedFakeNewsClassifier:
         self.ngram_range = ngram_range
         self.alpha = alpha
         
-        # Initialize vectorizer with improved parameters
+        # Initialize vectorizer with parameters
         if vectorizer_type == 'tfidf':
             self.vectorizer = TfidfVectorizer(
                 max_features=max_features,
@@ -68,9 +67,9 @@ class ImprovedFakeNewsClassifier:
         # Initialize Multinomial Naive Bayes with tuned alpha
         self.model = MultinomialNB(alpha=alpha)
         
-    def advanced_preprocess_text(self, text):
+    def preprocess_text(self, text):
         """
-        Enhanced text preprocessing
+        Text preprocessing
         
         Args:
             text: Input text string
@@ -153,7 +152,7 @@ class ImprovedFakeNewsClassifier:
         # Combine title and text
         print("\nPreprocessing text data...")
         df['combined_text'] = df['title'].fillna('') + ' ' + df['text'].fillna('')
-        df['cleaned_text'] = df['combined_text'].apply(self.advanced_preprocess_text)
+        df['cleaned_text'] = df['combined_text'].apply(self.preprocess_text)
         
         # Extract additional features
         df = self.extract_additional_features(df)
@@ -300,7 +299,7 @@ class ImprovedFakeNewsClassifier:
         sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
                     xticklabels=classes, yticklabels=classes,
                     cbar_kws={'label': 'Count'})
-        plt.title('Confusion Matrix - Improved Multinomial Naive Bayes', fontsize=14, fontweight='bold')
+        plt.title('Confusion Matrix - Multinomial Naive Bayes', fontsize=14, fontweight='bold')
         plt.ylabel('True Label', fontsize=12)
         plt.xlabel('Predicted Label', fontsize=12)
         
@@ -313,7 +312,7 @@ class ImprovedFakeNewsClassifier:
                         ha='center', va='center', fontsize=10, color='gray')
         
         plt.tight_layout()
-        output_path = os.path.join(output_dir, 'improved_confusion_matrix.png')
+        output_path = os.path.join(output_dir, 'confusion_matrix.png')
         plt.savefig(output_path, dpi=300, bbox_inches='tight')
         print(f"\nConfusion matrix saved as '{output_path}'")
         plt.close()
@@ -337,7 +336,7 @@ class ImprovedFakeNewsClassifier:
         plt.ylim([0.0, 1.05])
         plt.xlabel('False Positive Rate', fontsize=12)
         plt.ylabel('True Positive Rate', fontsize=12)
-        plt.title('ROC Curve - Improved Multinomial Naive Bayes', fontsize=14, fontweight='bold')
+        plt.title('ROC Curve - Multinomial Naive Bayes', fontsize=14, fontweight='bold')
         plt.legend(loc="lower right", fontsize=11)
         plt.grid(alpha=0.3)
         plt.tight_layout()
@@ -367,7 +366,7 @@ class ImprovedFakeNewsClassifier:
         
         return top_features
     
-    def save_model(self, filepath='models/improved_mnb_model.pkl'):
+    def save_model(self, filepath='models/mnb_model.pkl'):
         """Save the trained model"""
         import os
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
@@ -386,7 +385,7 @@ class ImprovedFakeNewsClassifier:
         
         print(f"\nModel saved to '{filepath}'")
     
-    def load_model(self, filepath='models/improved_mnb_model.pkl'):
+    def load_model(self, filepath='models/mnb_model.pkl'):
         """Load a trained model"""
         with open(filepath, 'rb') as f:
             model_data = pickle.load(f)
@@ -402,7 +401,7 @@ class ImprovedFakeNewsClassifier:
     
     def predict_single(self, text):
         """Predict a single news article"""
-        cleaned = self.advanced_preprocess_text(text)
+        cleaned = self.preprocess_text(text)
         prediction = self.predict([cleaned])[0]
         probabilities = self.predict_proba([cleaned])[0]
         

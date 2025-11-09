@@ -188,14 +188,23 @@ def plot_distributions(df, output_dir='outputs'):
     axes[1, 0].set_title('Lexical Diversity Distribution')
     axes[1, 0].legend()
     
-    # Category distribution
-    category_counts = df.groupby(['category', 'label']).size().unstack(fill_value=0)
-    category_counts.plot(kind='bar', ax=axes[1, 1])
-    axes[1, 1].set_xlabel('Category')
-    axes[1, 1].set_ylabel('Count')
-    axes[1, 1].set_title('Category Distribution by Label')
-    axes[1, 1].legend(title='Label')
-    axes[1, 1].tick_params(axis='x', rotation=45)
+    # Category distribution (fallback to label distribution if missing)
+    ax = axes[1, 1]
+    if 'category' in df.columns and not df['category'].isna().all():
+        category_counts = df.groupby(['category', 'label']).size().unstack(fill_value=0)
+        category_counts.plot(kind='bar', ax=ax)
+        ax.set_xlabel('Category')
+        ax.set_title('Category Distribution by Label')
+        ax.legend(title='Label')
+        ax.tick_params(axis='x', rotation=45)
+    else:
+        label_counts = df['label'].value_counts().sort_index()
+        label_counts.plot(kind='bar', ax=ax, color=sns.color_palette("deep", len(label_counts)))
+        ax.set_xlabel('Label')
+        ax.set_title('Label Distribution')
+        ax.tick_params(axis='x', rotation=0)
+
+    ax.set_ylabel('Count')
     
     plt.tight_layout()
     output_path = os.path.join(output_dir, 'data_distribution_analysis.png')

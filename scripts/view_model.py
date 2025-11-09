@@ -8,7 +8,7 @@ import sys
 import os
 
 
-def view_model(file_path='models/mnb_fake_news_model.pkl'):
+def view_model(file_path='models/mnb_model.pkl'):
     """
     View the contents of a saved model file
     
@@ -61,6 +61,6 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         file_path = sys.argv[1]
     else:
-        file_path = 'models/mnb_fake_news_model.pkl'
+        file_path = 'models/mnb_model.pkl'
     
     view_model(file_path)

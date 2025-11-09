@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from src.improved_classifier import ImprovedFakeNewsClassifier
+from src.classifier import FakeNewsClassifier
 from sklearn.model_selection import train_test_split, cross_val_score, StratifiedKFold
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import LogisticRegression
@@ -244,7 +244,7 @@ def main():
     
     # Load data
     print("\nLoading and preprocessing data...")
-    classifier = ImprovedFakeNewsClassifier()
+    classifier = FakeNewsClassifier()
     df = classifier.load_and_prepare_data(DATA_PATH)
     
     # Prepare data

@@ -7,10 +7,10 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from src.improved_classifier import ImprovedFakeNewsClassifier
+from src.classifier import FakeNewsClassifier
 
 
-def predict_news(text, model_path='models/improved_mnb_model.pkl'):
+def predict_news(text, model_path='models/mnb_model.pkl'):
     """
     Predict if a news article is real or fake
     
@@ -22,7 +22,7 @@ def predict_news(text, model_path='models/improved_mnb_model.pkl'):
         Prediction result dictionary
     """
     # Load the trained model
-    classifier = ImprovedFakeNewsClassifier()
+    classifier = FakeNewsClassifier()
     
     try:
         classifier.load_model(model_path)

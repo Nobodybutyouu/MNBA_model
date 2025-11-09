@@ -1,13 +1,13 @@
 """
-Improved Training Script
-Train the enhanced Multinomial Naive Bayes model with better parameters
+Training Script
+Train the Multinomial Naive Bayes model with tuned parameters
 """
 
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from src.improved_classifier import ImprovedFakeNewsClassifier
+from src.classifier import FakeNewsClassifier
 from sklearn.model_selection import train_test_split
 import warnings
 warnings.filterwarnings('ignore')
@@ -17,15 +17,15 @@ def main():
     """Main execution function"""
     
     print("="*70)
-    print("IMPROVED MULTINOMIAL NAIVE BAYES FAKE NEWS CLASSIFIER")
+    print("MULTINOMIAL NAIVE BAYES FAKE NEWS CLASSIFIER")
     print("="*70)
     
-    # Enhanced Configuration
+    # Configuration
     DATA_PATH = r'data\cleaned\news.csv'
-    MODEL_PATH = r'models\improved_mnb_model.pkl'
+    MODEL_PATH = r'models\mnb_model.pkl'
     OUTPUT_DIR = r'outputs'
     
-    # Improved hyperparameters
+    # Hyperparameters
     TEST_SIZE = 0.2
     RANDOM_STATE = 42
     VECTORIZER_TYPE = 'tfidf'
@@ -40,8 +40,8 @@ def main():
     print(f"  Alpha (smoothing): {ALPHA}")
     print(f"  Test Size: {TEST_SIZE*100:.0f}%")
     
-    # Initialize improved classifier
-    classifier = ImprovedFakeNewsClassifier(
+    # Initialize classifier
+    classifier = FakeNewsClassifier(
         vectorizer_type=VECTORIZER_TYPE,
         max_features=MAX_FEATURES,
         ngram_range=NGRAM_RANGE,

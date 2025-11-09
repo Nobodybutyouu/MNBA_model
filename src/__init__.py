@@ -2,7 +2,7 @@
 MNBA Fake News Classifier Package
 """
 
-from .improved_classifier import ImprovedFakeNewsClassifier
+from .classifier import FakeNewsClassifier
 
 __version__ = "1.0.0"
-__all__ = ['ImprovedFakeNewsClassifier']
+__all__ = ['FakeNewsClassifier']

@@ -22,11 +22,13 @@ This project implements an optimized text classification model using the Multino
 ## Dataset
 
 The dataset (`news.csv`) contains:
+
 - **title**: News article title
 - **text**: Full article content
 - **label**: Classification label (REAL/FAKE)
 
 **Dataset Statistics:**
+
 - 6,335 news articles
 - Balanced dataset (50% REAL, 50% FAKE)
 - Real text content (not anonymized)
@@ -35,16 +37,18 @@ The dataset (`news.csv`) contains:
 ## Installation
 
 1. **Navigate to the project directory**:
+
    ```bash
    cd MNBA_model
    ```
-
 2. **Install required dependencies**:
+
    ```bash
    pip install -r requirements.txt
    ```
 
    Or using Python module:
+
    ```bash
    python -m pip install -r requirements.txt
    ```
@@ -56,10 +60,11 @@ The dataset (`news.csv`) contains:
 Train the optimized model:
 
 ```bash
-python scripts/train_improved.py
+python scripts/train.py
 ```
 
 **What it does:**
+
 1. Loads 6,335 news articles from `data/cleaned/news.csv`
 2. Preprocesses text (removes URLs, special chars, normalizes)
 3. Splits data into training (80%) and testing (20%) with stratification
@@ -69,10 +74,11 @@ python scripts/train_improved.py
    - Alpha smoothing: 0.1
 5. Performs 5-fold cross-validation
 6. Evaluates on test set and generates metrics
-7. Saves trained model to `models/improved_mnb_model.pkl`
+7. Saves trained model to `models/mnb_model.pkl`
 8. Creates visualizations (confusion matrix, ROC curve)
 
 **Expected Results:**
+
 - Accuracy: ~89%
 - Training time: ~30-60 seconds
 - Model size: ~0.67 MB
@@ -80,22 +86,25 @@ python scripts/train_improved.py
 ### Making Predictions
 
 **Interactive mode:**
+
 ```bash
 python scripts/predict.py
 ```
 
 **Command line prediction:**
+
 ```bash
 python scripts/predict.py "Your news article text here..."
 ```
 
 **Using in your own code:**
+
 ```python
-from src.improved_classifier import ImprovedFakeNewsClassifier
+from src.classifier import FakeNewsClassifier
 
 # Load the trained model
-classifier = ImprovedFakeNewsClassifier()
-classifier.load_model('models/improved_mnb_model.pkl')
+classifier = FakeNewsClassifier()
+classifier.load_model('models/mnb_model.pkl')
 
 # Predict a single article
 article_text = "Breaking: Scientists discover new planet in solar system"
@@ -110,15 +119,19 @@ print(f"Real probability: {result['probabilities']['real']:.2%}")
 ### Model Analysis
 
 **Compare different algorithms:**
+
 ```bash
 python scripts/compare_models.py
 ```
+
 Compares Multinomial NB, Logistic Regression, Random Forest, and SVM.
 
 **Analyze data quality:**
+
 ```bash
 python scripts/analyze_data.py
 ```
+
 Checks text quality, distribution, and authenticity.
 
 ### View Model Details
@@ -130,21 +143,22 @@ python scripts/view_model.py
 ```
 
 Or specify a custom path:
+
 ```bash
-python scripts/view_model.py models/improved_mnb_model.pkl
+python scripts/view_model.py models/mnb_model.pkl
 ```
 
 ## Model Performance
 
 ### Publication-Ready Results
 
-| Metric | Score | Interpretation |
-|--------|-------|----------------|
-| **Accuracy** | **89.11%** | Overall correct predictions |
-| **Precision** | **86.56%** | Low false positive rate |
-| **Recall** | **92.58%** | Catches most fake news |
-| **F1-Score** | **89.47%** | Balanced performance |
-| **ROC AUC** | **0.96** | Excellent discrimination |
+| Metric              | Score            | Interpretation              |
+| ------------------- | ---------------- | --------------------------- |
+| **Accuracy**  | **89.11%** | Overall correct predictions |
+| **Precision** | **86.56%** | Low false positive rate     |
+| **Recall**    | **92.58%** | Catches most fake news      |
+| **F1-Score**  | **89.47%** | Balanced performance        |
+| **ROC AUC**   | **0.96**   | Excellent discrimination    |
 
 ### Cross-Validation Results
 
@@ -168,6 +182,7 @@ weighted avg       0.89      0.89      0.89      1267
 ### Top Predictive Features
 
 **Words indicating FAKE news:**
+
 1. trump
 2. clinton
 3. hillary
@@ -178,6 +193,7 @@ weighted avg       0.89      0.89      0.89      1267
 8. media
 
 **Words indicating REAL news:**
+
 1. said
 2. president
 3. republican
@@ -191,7 +207,7 @@ weighted avg       0.89      0.89      0.89      1267
 
 ## Model Configuration
 
-**Optimized hyperparameters in `scripts/train_improved.py`:**
+**Optimized hyperparameters in `scripts/train.py`:**
 
 ```python
 VECTORIZER_TYPE = 'tfidf'     # TF-IDF vectorization
@@ -203,6 +219,7 @@ RANDOM_STATE = 42             # Reproducibility
 ```
 
 **Why these parameters?**
+
 - **10K features**: Captures more vocabulary diversity
 - **Trigrams**: Detects 3-word phrases (e.g., "hillary clinton said")
 - **Alpha=0.1**: Reduces over-smoothing for better accuracy
@@ -211,12 +228,14 @@ RANDOM_STATE = 42             # Reproducibility
 ## How It Works
 
 ### 1. Text Preprocessing
+
 - Converts text to lowercase
 - Removes URLs, emails, and special characters
 - Removes extra whitespace
 - Combines title and text for richer features
 
 ### 2. Feature Extraction
+
 - Uses **TF-IDF** (Term Frequency-Inverse Document Frequency) vectorization
 - Extracts unigrams, bigrams, and trigrams (1-3 word sequences)
 - Removes stop words (common words like "the", "is", "and")
@@ -226,12 +245,14 @@ RANDOM_STATE = 42             # Reproducibility
 - Max document frequency: 85% (removes too common words)
 
 ### 3. Classification
+
 - **Multinomial Naive Bayes** applies Bayes' theorem with feature independence assumption
 - Well-suited for text classification with discrete features
 - Calculates probability of each class given the text features
 - Returns class with highest probability
 
 ### 4. Evaluation
+
 - Splits data into training (80%) and testing (20%) sets
 - Trains on training data
 - Evaluates on unseen test data
@@ -240,17 +261,20 @@ RANDOM_STATE = 42             # Reproducibility
 ## Algorithm Details
 
 **Multinomial Naive Bayes** is particularly effective for:
+
 - Text classification tasks
 - Document categorization
 - Spam detection
 - Sentiment analysis
 
 The algorithm calculates:
+
 ```
 P(class|document) ∝ P(class) × ∏ P(word|class)
 ```
 
 Where:
+
 - `P(class|document)` is the probability of the class given the document
 - `P(class)` is the prior probability of the class
 - `P(word|class)` is the likelihood of each word given the class
@@ -259,7 +283,7 @@ Where:
 
 ```
 ======================================================================
-IMPROVED MULTINOMIAL NAIVE BAYES FAKE NEWS CLASSIFIER
+MULTINOMIAL NAIVE BAYES FAKE NEWS CLASSIFIER
 ======================================================================
 
 Configuration:
@@ -317,19 +341,23 @@ seaborn>=0.12.0
 ## Troubleshooting
 
 **Model file not found?**
-- Run `python scripts/train_improved.py` first to create the model
-- Check that `models/improved_mnb_model.pkl` exists
+
+- Run `python scripts/train.py` first to create the model
+- Check that `models/mnb_model.pkl` exists
 
 **Import errors?**
+
 - Ensure you're in the project root directory (`MNBA_model/`)
 - Install dependencies: `pip install -r requirements.txt`
 - Check Python version: Requires Python 3.8+
 
 **Prediction errors?**
-- Verify model file exists: `models/improved_mnb_model.pkl`
-- Check that you're using `ImprovedFakeNewsClassifier` not `FakeNewsClassifier`
+
+- Verify model file exists: `models/mnb_model.pkl`
+- Check that you're using `FakeNewsClassifier`
 
 **Low accuracy during training?**
+
 - Verify dataset: Should be `news.csv` (6,335 articles)
 - Check data quality: Run `python scripts/analyze_data.py`
 - Expected accuracy: 88-90%
@@ -339,6 +367,7 @@ seaborn>=0.12.0
 ### Manuscript-Ready Information
 
 **Model Specifications:**
+
 - Algorithm: Multinomial Naive Bayes
 - Vectorization: TF-IDF with trigrams (1-3)
 - Features: 10,000 most informative terms
@@ -347,6 +376,7 @@ seaborn>=0.12.0
 - Cross-validation: 5-fold stratified
 
 **Performance Summary:**
+
 - Test Accuracy: 89.11%
 - Cross-validation: 89.46% ±0.87%
 - Precision: 86.56%
@@ -355,6 +385,7 @@ seaborn>=0.12.0
 - ROC AUC: 0.96
 
 **Key Strengths:**
+
 1. Exceeds 85% publication threshold
 2. Balanced precision and recall
 3. Stable cross-validation performance
@@ -363,12 +394,14 @@ seaborn>=0.12.0
 6. Reproducible results (fixed random seed)
 
 **Visualizations Available:**
-- Confusion matrix: `outputs/improved_confusion_matrix.png`
+
+- Confusion matrix: `outputs/confusion_matrix.png`
 - ROC curve: `outputs/roc_curve.png`
 
 ## Future Enhancements
 
 Potential improvements:
+
 - Ensemble methods (combining with SVM, Random Forest)
 - Deep learning approaches (LSTM, BERT)
 - Additional features (sentiment, readability scores)
@@ -393,7 +426,7 @@ Created as a demonstration of Multinomial Naive Bayes classification for fake ne
 pip install -r requirements.txt
 
 # Train model (89% accuracy)
-python scripts/train_improved.py
+python scripts/train.py
 
 # Make predictions (interactive)
 python scripts/predict.py
@@ -414,10 +447,10 @@ python scripts/view_model.py
 ## Import in Your Code
 
 ```python
-from src.improved_classifier import ImprovedFakeNewsClassifier
+from src.classifier import FakeNewsClassifier
 
 # Initialize (optional - only needed for training)
-classifier = ImprovedFakeNewsClassifier(
+classifier = FakeNewsClassifier(
     vectorizer_type='tfidf',
     max_features=10000,
     ngram_range=(1, 3),
@@ -425,8 +458,8 @@ classifier = ImprovedFakeNewsClassifier(
 )
 
 # Load pre-trained model (recommended)
-classifier = ImprovedFakeNewsClassifier()
-classifier.load_model('models/improved_mnb_model.pkl')
+classifier = FakeNewsClassifier()
+classifier.load_model('models/mnb_model.pkl')
 
 # Make prediction
 text = "Breaking news: Scientists discover cure for common cold"
@@ -452,8 +485,8 @@ print(f"Real: {result['probabilities']['real']:.2%}")
 
 ---
 
-**For more information, check the code documentation in `src/improved_classifier.py` and `scripts/` directory.**
+**For more information, check the code documentation in `src/classifier.py` and `scripts/` directory.**
 
-**Created**: November 2025  
-**Status**: Publication-Ready  
+**Created**: November 2025
+**Status**: Publication-Ready
 **License**: Educational Use
